@@ -1,0 +1,37 @@
+start () <-- the start state
+   ': single_quote
+   /: maybe_comment
+   ": double_quote
+   other: Start
+
+single_quote ()
+   \: backslash_char
+   ': start
+   other: single_quote
+   
+backslash_char ()
+   any: single_quote
+   
+maybe_comment ()
+   ': single_quote
+   ": double_quote
+   *: comment
+   /: maybe_comment
+   other: start
+
+comment ()
+   *: maybe_end_comment
+   other: comment
+
+maybe_end_comment ()
+   *: maybe_end_comment
+   /: start
+   other: comment
+
+double_quote ()
+   \: backslash_string
+   ": start
+   other: single_quote
+
+backslash_string ()
+   any: single_quote
