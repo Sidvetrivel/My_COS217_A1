@@ -28,9 +28,6 @@ enum Statetype start(int c)
     }
     /* else case */
     else{
-        if(c == '\n'){
-            lines++;
-        }
         putchar(c);
         state = START;
     }
@@ -53,9 +50,6 @@ enum Statetype single_quote(int c)
     }
     /* else case */
     else{
-        if(c == '\n'){
-            lines++;
-        }
         putchar(c);
         state = SINGLE_QUOTE;
     }
@@ -99,9 +93,6 @@ enum Statetype maybe_comment(int c)
     }
     /* else case*/
     else{
-        if(c == '\n'){
-            lines++;
-        }
         putchar('/');
         putchar(c);
         state = START;
@@ -121,7 +112,6 @@ enum Statetype comment(int c)
     else {
         if(c == '\n'){
             putchar(c);
-            lines++;
         }
         state = COMMENT;
     }
@@ -144,7 +134,6 @@ enum Statetype maybe_end_comment(int c)
     else {
         if(c == '\n'){
             putchar(c);
-            lines++;
         }
         state = COMMENT;
     }
@@ -167,9 +156,6 @@ enum Statetype double_quote(int c)
     }
     /* else case */
     else {
-        if(c == '\n'){
-            lines++;
-        }
         putchar(c);
         state = DOUBLE_QUOTE;
     }
