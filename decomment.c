@@ -12,22 +12,22 @@ enum Statetype start(int c)
     /* single quote */
     if (c == 39) {
         putchar(c);
-        state = single_quote;
+        state = SINGLE_QUOTE;
     } 
      /* forware slash */
     else if (c == 47) {
         putchar(c);
-        state = maybe_comment;
+        state = MAYBE_COMMENT;
     }
     /* double quote */
     else if(c == 34) {
         putchar(c);
-        state = double_quote;
+        state = DOUBLE_QUOTE;
     }
     /* else case */
     else{
         putchar(c);
-        state = start;
+        state = START;
     }
     return state;
 }
@@ -39,17 +39,17 @@ enum Statetype single_quote(int c)
       /* backslash char */
     if (c == 92) {
         putchar(c);
-        state = backslash_char;
+        state = BACKSLASH_CHAR;
     }
     /* end single quote */
     else if(c == 39) {
         putchar(c);
-        state = start;
+        state = START;
     }
     /* else case */
     else{
         putchar(c);
-        state = single_quote;
+        state = SINGLE_QUOTE;
     }
     return state;
 }
@@ -59,7 +59,7 @@ enum Statetype backslash_char(int c)
 {
     enum Statetype state;
     putchar(c);
-    state = single_quote;
+    state = SINGLE_QUOTE;
     return state;
 }
 
@@ -71,29 +71,29 @@ enum Statetype maybe_comment(int c)
     if (c == 39) {
         putchar(47);
         putchar(39);
-        state = single_quote;
+        state = SINGLE_QUOTE;
     } 
      /* double quote */
     else if (c == 34) {
         putchar(47);
         putchar(34);
-        state = double_quote;
+        state = DOUBLE_QUOTE;
     }
     /* confirmed comment */
     else if(c == 42) {
         putchar(32);
-        state = comment;
+        state = COMMENT;
     }
     /* maybe comment */
     else if(c == 47){
         putchar(c);
-        state = maybe_comment;
+        state = MAYBE_COMMENT;
     }
     /* else case*/
     else{
         putchar(47);
         putchar(c);
-        state = start;
+        state = START;
     }
     return state;
 }
@@ -105,12 +105,12 @@ enum Statetype comment(int c)
     /* maybe end of comment */
     if(c == 42){
         putchar(c);
-        state = maybe_end_comment;
+        state = MAYBE_END_COMMENT;
     }
     /* else case */
     else {
         putchar('\n');
-        state = comment;
+        state = COMMENT;
     }
     return state;
 }
@@ -122,12 +122,12 @@ enum Statetype maybe_end_comment(int c)
     /* maybe end of comment */
     if(c == 42){
         putchar(c);
-        state = maybe_end_comment;
+        state = MAYBE_END_COMMENT;
     }
     /* else case */
     else {
         putchar('\n');
-        state = comment;
+        state = COMMENT;
     }
     return state;
 }
@@ -139,17 +139,17 @@ enum Statetype double_quote(int c)
     /* backslash in string t */
     if(c == 39){
         putchar(c);
-        state = backslash_string;
+        state = BACKSLASH_STRING;
     }
     /* double quote back to start */
     else if(c == 34) {
         putchar(c);
-        state = start;
+        state = START;
     }
     /* else case */
     else {
         putchar(c);
-        state = double_quote;
+        state = DOUBLE_QUOTE;
     }
     return state;
 }
@@ -159,7 +159,7 @@ enum Statetype backslash_string(int c)
 {
     enum Statetype state;
     putchar(c);
-    state = double_quote;
+    state = DOUBLE_QUOTE;
     return state;
 }
 
@@ -167,7 +167,7 @@ enum Statetype backslash_string(int c)
 int main(void)
 {
     int c;
-    enum Statetype state = start;
+    enum Statetype state = START;
     /* loop handles the state transitions */
     while ((c = getchar()) != EOF) {
         /* determines which function to call depending on state */
