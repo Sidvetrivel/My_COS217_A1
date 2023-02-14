@@ -31,7 +31,7 @@ maybe_end_comment ()
 double_quote ()
    \: backslash_string
    ": start
-   other: single_quote
+   other: double_quote
 
 backslash_string ()
-   any: single_quote
+   any: double_quote
