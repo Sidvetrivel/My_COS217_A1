@@ -219,7 +219,7 @@ int main(void)
             break;
         }
     }
-    if(state == MAYBE_END_COMMENT | state == COMMENT){
+    if((state == MAYBE_END_COMMENT) | (state == COMMENT)){
         printf("Error: line %d: unterminated comment", lines);
     }
     return 0;
