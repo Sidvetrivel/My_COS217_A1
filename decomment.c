@@ -167,9 +167,15 @@ enum Statetype backslash_string(int c)
 int main(void)
 {
     int c;
+    int lines = 1;
     enum Statetype state = START;
     /* loop handles the state transitions */
     while ((c = getchar()) != EOF) {
+        /* updates # of lines */
+        if(c == "/n")
+        {
+            lines++;
+        }
         /* determines which function to call depending on state */
         switch (state) {
             case START:
@@ -197,6 +203,9 @@ int main(void)
             state = backslash_string(c);
             break;
         }
+    }
+    if(state == MAYBE_END_COMMENT | COMMENT){
+        printf("Error: line %d: unterminated comment", lines);
     }
     return 0;
 }
