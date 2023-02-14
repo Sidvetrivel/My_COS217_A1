@@ -1,37 +1,37 @@
-start () <-- the start state
+start (accept) <-- the start state
    ': single_quote
    /: maybe_comment
    ": double_quote
    other: Start
 
-single_quote ()
+single_quote (accept)
    \: backslash_char
    ': start
    other: single_quote
    
-backslash_char ()
+backslash_char (accept)
    any: single_quote
    
-maybe_comment ()
+maybe_comment (accept)
    ': single_quote
    ": double_quote
    *: comment
    /: maybe_comment
    other: start
 
-comment ()
+comment (reject)
    *: maybe_end_comment
    other: comment
 
-maybe_end_comment ()
+maybe_end_comment (reject)
    *: maybe_end_comment
    /: start
    other: comment
 
-double_quote ()
+double_quote (accept)
    \: backslash_string
    ": start
    other: double_quote
 
-backslash_string ()
+backslash_string (accept)
    any: double_quote

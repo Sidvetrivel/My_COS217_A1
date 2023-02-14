@@ -10,16 +10,16 @@ enum Statetype start(int c)
 {   
     enum Statetype state;
     /* single quote */
-    if (c == 39) {
+    if (c == '\'') {
         putchar(c);
         state = SINGLE_QUOTE;
     } 
      /* forware slash */
-    else if (c == 47) {
+    else if (c == '/') {
         state = MAYBE_COMMENT;
     }
     /* double quote */
-    else if(c == 34) {
+    else if(c == '"') {
         putchar(c);
         state = DOUBLE_QUOTE;
     }
@@ -36,12 +36,12 @@ enum Statetype single_quote(int c)
 {
     enum Statetype state;
     /* backslash char */
-    if (c == 92) {
+    if (c == '\\') {
         putchar(c);
         state = BACKSLASH_CHAR;
     }
     /* end single quote */
-    else if(c == 39) {
+    else if(c == '\'') {
         putchar(c);
         state = START;
     }
@@ -67,30 +67,30 @@ enum Statetype maybe_comment(int c)
 {   
     enum Statetype state;
     /* single quote */
-    if (c == 39) {
-        putchar(47);
-        putchar(39);
+    if (c == '\'') {
+        putchar('/');
+        putchar(c);
         state = SINGLE_QUOTE;
     } 
     /* double quote */
-    else if (c == 34) {
-        putchar(47);
-        putchar(34);
+    else if (c == '"') {
+        putchar('/');
+        putchar(c);
         state = DOUBLE_QUOTE;
     }
     /* confirmed comment */
-    else if(c == 42) {
-        putchar(32);
+    else if(c == '*') {
+        putchar(' ');
         state = COMMENT;
     }
     /* maybe comment */
-    else if(c == 47){
-        putchar(47);
+    else if(c == '/'){
+        putchar(c);
         state = MAYBE_COMMENT;
     }
     /* else case*/
     else{
-        putchar(47);
+        putchar('/');
         putchar(c);
         state = START;
     }
@@ -102,13 +102,14 @@ enum Statetype comment(int c)
 {
     enum Statetype state;
     /* maybe end of comment */
-    if(c == 42){
-        putchar(c);
+    if(c == '*'){
         state = MAYBE_END_COMMENT;
     }
     /* else case */
     else {
-        putchar(c);
+        if(c == '\n'){
+            putchar(c);
+        }
         state = COMMENT;
     }
     return state;
@@ -119,18 +120,18 @@ enum Statetype maybe_end_comment(int c)
 {
     enum Statetype state;
     /* maybe end of comment */
-    if(c == 42){
-        putchar(c);
+    if(c == '*'){
         state = MAYBE_END_COMMENT;
     }
     /* back to start case */
-    else if(c == 47){
-        putchar(c);
+    else if(c == '/'){
         state = START;
     }
     /* stay in maybe_end_comment case */
     else {
-        putchar(c);
+        if(c == '\n'){
+            putchar(c);
+        }
         state = COMMENT;
     }
     return state;
@@ -141,12 +142,12 @@ enum Statetype double_quote(int c)
 {
     enum Statetype state;
     /* backslash in string t */
-    if(c == 39){
+    if(c == '\\'){
         putchar(c);
         state = BACKSLASH_STRING;
     }
     /* double quote back to start */
-    else if(c == 34) {
+    else if(c == '"') {
         putchar(c);
         state = START;
     }
