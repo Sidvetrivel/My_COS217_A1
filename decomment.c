@@ -26,6 +26,9 @@ enum Statetype start(int c)
     }
     /* else case */
     else{
+        if(c == '\n'){
+            line_update(c);
+        }
         putchar(c);
         state = START;
     }
@@ -48,6 +51,9 @@ enum Statetype single_quote(int c)
     }
     /* else case */
     else{
+        if(c == '\n'){
+            line_update(c);
+        }
         putchar(c);
         state = SINGLE_QUOTE;
     }
@@ -91,6 +97,9 @@ enum Statetype maybe_comment(int c)
     }
     /* else case*/
     else{
+        if(c == '\n'){
+            line_update(c);
+        }
         putchar(47);
         putchar(c);
         state = START;
@@ -109,7 +118,10 @@ enum Statetype comment(int c)
     }
     /* else case */
     else {
-        putchar('\n');
+        if(c == '\n'){
+            line_update(c);
+        }
+        putchar(c);
         state = COMMENT;
     }
     return state;
@@ -126,7 +138,10 @@ enum Statetype maybe_end_comment(int c)
     }
     /* else case */
     else {
-        putchar('\n');
+        if(c == '\n'){
+            line_update(c);
+        }
+        putchar(c);
         state = COMMENT;
     }
     return state;
@@ -148,6 +163,9 @@ enum Statetype double_quote(int c)
     }
     /* else case */
     else {
+        if(c == '\n'){
+            line_update(c);
+        }
         putchar(c);
         state = DOUBLE_QUOTE;
     }
@@ -163,19 +181,24 @@ enum Statetype backslash_string(int c)
     return state;
 }
 
+int line_update(int c){
+    int lines = 1;
+    if(c == EOF){
+        lines = lines;
+    }
+    else{
+        lines++;
+    }
+    return lines;
+}
 
 int main(void)
 {
     int c;
-    int lines = 1;
+    int lines;
     enum Statetype state = START;
     /* loop handles the state transitions */
     while ((c = getchar()) != EOF) {
-        /* updates # of lines */
-        if(c == "/n")
-        {
-            lines++;
-        }
         /* determines which function to call depending on state */
         switch (state) {
             case START:
@@ -205,7 +228,7 @@ int main(void)
         }
     }
     if(state == MAYBE_END_COMMENT | COMMENT){
-        printf("Error: line %d: unterminated comment", lines);
+        printf("Error: line %d: unterminated comment", line_update(c));
     }
     return 0;
 }
