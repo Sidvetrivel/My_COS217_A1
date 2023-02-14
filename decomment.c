@@ -205,9 +205,6 @@ int main(void)
             break;
         }
     }
-    if((state == MAYBE_END_COMMENT) | (state == COMMENT)){
-        return("Error: line %d: unterminated comment", lines);
-    }
     return 0;
 }
 
