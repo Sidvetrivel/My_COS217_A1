@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <ctype.h>
+/* setting all possible states */
 enum Statetype {START, SINGLE_QUOTE, BACKSLASH_CHAR, MAYBE_COMMENT, 
-                COMMENT, MAYBE_END_COMMENT, DOUBLE_QUOTE, BACKSLASH_STRING};
+                COMMENT, MAYBE_END_COMMENT, DOUBLE_QUOTE,
+                BACKSLASH_STRING};
 
 /* start state */
 enum Statetype start(int c)
