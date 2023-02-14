@@ -205,6 +205,9 @@ int main(void)
             break;
         }
     }
+    if((state == MAYBE_END_COMMENT) | (state == COMMENT)){
+         fprintf(stderr, "Error: line X: unterminated comment \n");
+    }
     return 0;
 }
 
