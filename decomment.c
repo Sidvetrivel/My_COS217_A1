@@ -36,7 +36,7 @@ enum Statetype start(int c)
 enum Statetype single_quote(int c)
 {
     enum Statetype state;
-      /* backslash char */
+    /* backslash char */
     if (c == 92) {
         putchar(c);
         state = BACKSLASH_CHAR;
@@ -73,7 +73,7 @@ enum Statetype maybe_comment(int c)
         putchar(39);
         state = SINGLE_QUOTE;
     } 
-     /* double quote */
+    /* double quote */
     else if (c == 34) {
         putchar(47);
         putchar(34);
