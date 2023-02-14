@@ -108,7 +108,6 @@ enum Statetype comment(int c)
     }
     /* else case */
     else {
-        putchar(c);
         state = COMMENT;
     }
     return state;
