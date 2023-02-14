@@ -85,7 +85,7 @@ enum Statetype maybe_comment(int c)
     }
     /* maybe comment */
     else if(c == 47){
-        putchar(c);
+        putchar(47);
         state = MAYBE_COMMENT;
     }
     /* else case*/
@@ -108,6 +108,7 @@ enum Statetype comment(int c)
     }
     /* else case */
     else {
+        putchar(c);
         state = COMMENT;
     }
     return state;
@@ -122,7 +123,12 @@ enum Statetype maybe_end_comment(int c)
         putchar(c);
         state = MAYBE_END_COMMENT;
     }
-    /* else case */
+    /* back to start case */
+    else if(c == 47){
+        putchar(c);
+        state = START;
+    }
+    /* stay in maybe_end_comment case */
     else {
         putchar(c);
         state = COMMENT;
