@@ -193,7 +193,7 @@ int main(void)
             break;
             case MAYBE_COMMENT:
             state = maybe_comment(c);
-            if(state = COMMENT){
+            if(state == COMMENT){
                 linetracker = i_linecount;
             }
             break;
