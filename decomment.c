@@ -6,7 +6,7 @@ enum Statetype {START, SINGLE_QUOTE, BACKSLASH_CHAR, MAYBE_COMMENT,
                 BACKSLASH_STRING};
 
 /* global int variable that keeps track of # of lines */
-int i_linecount = 1;
+int i_linecount = 0;
 
 /* takes parameter int c, returns the next state transition in the 
 dfa, and prints to stdout. global line variable is updated within this 
