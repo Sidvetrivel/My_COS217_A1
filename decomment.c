@@ -220,7 +220,7 @@ int main(void)
         }
     }
     if((state == MAYBE_END_COMMENT) | (state == COMMENT)){
-         printf(stderr, "Error: line %d: unterminated comment \n", i_linecount);
+         fprintf(stderr, "Error: line %d: unterminated comment \n", i_linecount);
     }
     return 0;
 }
