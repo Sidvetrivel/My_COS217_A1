@@ -5,12 +5,8 @@ enum Statetype {START, SINGLE_QUOTE, BACKSLASH_CHAR, MAYBE_COMMENT,
                 COMMENT, MAYBE_END_COMMENT, DOUBLE_QUOTE,
                 BACKSLASH_STRING};
 
-/* global int variable that keeps track of # of lines */
-int i_linecount = 1;
-
-/* takes parameter int c, returns the next state transition in the 
-dfa, and prints to stdout. global line variable is updated within this 
-function when '\n' is detected. */
+/* takes parameter int c, decides output and next state at start state,
+returns the next state transition in the dfa, prints int c to stdout */
 enum Statetype start(int c)
 {   
     enum Statetype state;
@@ -36,7 +32,9 @@ enum Statetype start(int c)
     return state;
 }
 
-/* takes int c, outputs stdout, returns next state from single_quote */
+/* takes parameter int c, decides output and next state at single_quote
+state, returns the next state transition in the dfa, prints int c to 
+stdout */
 enum Statetype single_quote(int c)
 {
     enum Statetype state;
@@ -58,7 +56,8 @@ enum Statetype single_quote(int c)
     return state;
 }
 
-/* takes int c, outputs stdout, transitions back to single_quote */
+/* takes parameter int c, output next state (SINGLE_QUOTE),
+returns the next state transition in the dfa, prints int c to stdout */
 enum Statetype backslash_char(int c)
 {
     enum Statetype state;
@@ -67,7 +66,9 @@ enum Statetype backslash_char(int c)
     return state;
 }
 
-/* takes int c, outputs stdout, returns 1 of 5 possible next states */
+/* takes parameter int c, decides output and next state at 
+maybe_comment state, returns the next state transition in the dfa, 
+prints int c to stdout and depending on the case, the previous char */
 enum Statetype maybe_comment(int c)
 {   
     enum Statetype state;
@@ -102,7 +103,9 @@ enum Statetype maybe_comment(int c)
     return state;
 }
 
-/* takes int c comment state */
+/* takes parameter int c, decides output and next state at 
+comment state, returns the next state transition in the dfa, 
+prints int c to stdout if newline character, otherwise no stdout */
 enum Statetype comment(int c)
 {
     enum Statetype state;
@@ -120,7 +123,9 @@ enum Statetype comment(int c)
     return state;
 }
 
-/* possible end comment state */
+/* takes parameter int c, decides output and next state at 
+maybe_end_comment state, returns the next state transition in the dfa, 
+prints int c to stdout if c is newline character  */
 enum Statetype maybe_end_comment(int c)
 {
     enum Statetype state;
@@ -142,7 +147,9 @@ enum Statetype maybe_end_comment(int c)
     return state;
 }
 
-/* enter double quote state */
+/* takes parameter int c, decides output and next state at 
+double_quote state, returns the next state transition in the dfa, 
+prints int c to stdout*/
 enum Statetype double_quote(int c)
 {
     enum Statetype state;
@@ -164,7 +171,8 @@ enum Statetype double_quote(int c)
     return state;
 }
 
-/* backslash in string state */
+/* takes parameter int c, output next state (DOUBLE_QUOTE),
+returns the next state transition in the dfa, prints int c to stdout */
 enum Statetype backslash_string(int c)
 {
     enum Statetype state;
@@ -173,10 +181,15 @@ enum Statetype backslash_string(int c)
     return state;
 }
 
+/* main has no parameters. Handles the state transitions and when to 
+break out of the while loop. If there is an error, main calculates
+the line at which the error occurs and outputs it to stderr. main also 
+handles a special case regarding the maybe_comment state */
 int main(void)
 {
     int c;
-    int linetracker;
+    int i_linetracker;
+    int i_linecount = 1;
     enum Statetype state = START;
     /* loop handles the state transitions */
     while ((c = getchar()) != EOF) {
@@ -194,7 +207,7 @@ int main(void)
             case MAYBE_COMMENT:
             state = maybe_comment(c);
             if(state == COMMENT){
-                linetracker = i_linecount;
+                i_linetracker = i_linecount;
             }
             break;
             case COMMENT:
@@ -218,7 +231,8 @@ int main(void)
         putchar('/');
     }
     if((state == MAYBE_END_COMMENT) | (state == COMMENT)){
-         fprintf(stderr, "Error: line %d: unterminated comment\n", linetracker);
+         fprintf(stderr, "Error: line %d: unterminated comment\n", 
+         i_linetracker);
          return 1;
     }
     return 0;
