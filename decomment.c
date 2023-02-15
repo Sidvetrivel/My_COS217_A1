@@ -7,7 +7,6 @@ enum Statetype {START, SINGLE_QUOTE, BACKSLASH_CHAR, MAYBE_COMMENT,
 
 /* global int variable that keeps track of # of lines */
 int i_linecount = 0;
-int i_commentcount = 0;
 
 /* takes parameter int c, returns the next state transition in the 
 dfa, and prints to stdout. global line variable is updated within this 
@@ -107,7 +106,6 @@ enum Statetype maybe_comment(int c)
 enum Statetype comment(int c)
 {
     enum Statetype state;
-    i_commentcount = i_linecount;
     /* maybe end of comment */
     if(c == '*'){
         state = MAYBE_END_COMMENT;
@@ -214,7 +212,6 @@ int main(void)
     }
     if((state == MAYBE_END_COMMENT) | (state == COMMENT)){
          fprintf(stderr, "Error: line %d: unterminated comment\n", i_linecount);
-         fprintf(stderr, "%d", i_commentcount);
          return 1;
     }
     return 0;
