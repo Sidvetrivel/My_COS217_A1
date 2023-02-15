@@ -176,6 +176,7 @@ enum Statetype backslash_string(int c)
 int main(void)
 {
     int c;
+    int linetracker;
     enum Statetype state = START;
     /* loop handles the state transitions */
     while ((c = getchar()) != EOF) {
@@ -192,6 +193,9 @@ int main(void)
             break;
             case MAYBE_COMMENT:
             state = maybe_comment(c);
+            if(state = COMMENT){
+                linetracker = i_linecount;
+            }
             break;
             case COMMENT:
             state = comment(c);
@@ -211,7 +215,7 @@ int main(void)
         }
     }
     if((state == MAYBE_END_COMMENT) | (state == COMMENT)){
-         fprintf(stderr, "Error: line %d: unterminated comment\n", i_linecount);
+         fprintf(stderr, "Error: line %d: unterminated comment\n", linetracker);
          return 1;
     }
     return 0;
