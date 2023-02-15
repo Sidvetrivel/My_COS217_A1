@@ -31,9 +31,6 @@ enum Statetype start(int c)
     }
     /* else case */
     else{
-        if(c == '\n'){
-            i_linecount++;
-        }
         putchar(c);
         state = START;
     }
@@ -56,9 +53,6 @@ enum Statetype single_quote(int c)
     }
     /* else case */
     else{
-        if(c == '\n'){
-            i_linecount++;
-        }
         putchar(c);
         state = SINGLE_QUOTE;
     }
@@ -102,9 +96,6 @@ enum Statetype maybe_comment(int c)
     }
     /* else case*/
     else{
-        if(c == '\n'){
-            i_linecount++;
-        }
         putchar('/');
         putchar(c);
         state = START;
@@ -125,7 +116,6 @@ enum Statetype comment(int c)
     else {
         if(c == '\n'){
             putchar(c);
-            i_linecount++;
         }
         state = COMMENT;
     }
@@ -148,7 +138,6 @@ enum Statetype maybe_end_comment(int c)
     else {
         if(c == '\n'){
             putchar(c);
-            i_linecount++;
         }
         state = COMMENT;
     }
@@ -171,9 +160,6 @@ enum Statetype double_quote(int c)
     }
     /* else case */
     else {
-        if(c == '\n'){
-            i_linecount++;
-        }
         putchar(c);
         state = DOUBLE_QUOTE;
     }
@@ -221,6 +207,9 @@ int main(void)
             case BACKSLASH_STRING:
             state = backslash_string(c);
             break;
+        }
+        if(c == '\n'){
+            i_linecount++;
         }
     }
     if((state == MAYBE_END_COMMENT) | (state == COMMENT)){
