@@ -6,7 +6,7 @@ enum Statetype {START, SINGLE_QUOTE, BACKSLASH_CHAR, MAYBE_COMMENT,
                 BACKSLASH_STRING};
 
 /* keeps track of # of lines */
-int lines;
+int i_linecount;
 
 /* initial state for the DFA and outputs the next state */
 enum Statetype start(int c)
@@ -28,6 +28,9 @@ enum Statetype start(int c)
     }
     /* else case */
     else{
+        if(c == '\n'){
+            i_linecount++;
+        }
         putchar(c);
         state = START;
     }
@@ -50,6 +53,9 @@ enum Statetype single_quote(int c)
     }
     /* else case */
     else{
+        if(c == '\n'){
+            i_linecount++;
+        }
         putchar(c);
         state = SINGLE_QUOTE;
     }
@@ -93,6 +99,9 @@ enum Statetype maybe_comment(int c)
     }
     /* else case*/
     else{
+        if(c == '\n'){
+            i_linecount++;
+        }
         putchar('/');
         putchar(c);
         state = START;
@@ -112,6 +121,7 @@ enum Statetype comment(int c)
     else {
         if(c == '\n'){
             putchar(c);
+            i_linecount++;
         }
         state = COMMENT;
     }
@@ -134,6 +144,7 @@ enum Statetype maybe_end_comment(int c)
     else {
         if(c == '\n'){
             putchar(c);
+            i_linecount++;
         }
         state = COMMENT;
     }
@@ -156,6 +167,9 @@ enum Statetype double_quote(int c)
     }
     /* else case */
     else {
+        if(c == '\n'){
+            i_linecount++;
+        }
         putchar(c);
         state = DOUBLE_QUOTE;
     }
@@ -206,7 +220,7 @@ int main(void)
         }
     }
     if((state == MAYBE_END_COMMENT) | (state == COMMENT)){
-         fprintf(stderr, "Error: line X: unterminated comment \n");
+         printf(stderr, "Error: line %d: unterminated comment \n", i_linecount);
     }
     return 0;
 }
