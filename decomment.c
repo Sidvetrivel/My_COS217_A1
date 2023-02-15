@@ -214,6 +214,9 @@ int main(void)
             i_linecount++;
         }
     }
+    if(state == MAYBE_COMMENT){
+        putchar('/');
+    }
     if((state == MAYBE_END_COMMENT) | (state == COMMENT)){
          fprintf(stderr, "Error: line %d: unterminated comment\n", linetracker);
          return 1;
