@@ -1,14 +1,16 @@
 #include <stdio.h>
 #include <ctype.h>
-/* setting all possible states */
+/* setting all possible states in the DFA */
 enum Statetype {START, SINGLE_QUOTE, BACKSLASH_CHAR, MAYBE_COMMENT, 
                 COMMENT, MAYBE_END_COMMENT, DOUBLE_QUOTE,
                 BACKSLASH_STRING};
 
-/* keeps track of # of lines */
-int i_linecount;
+/* global int variable that keeps track of # of lines */
+int i_linecount = 1;
 
-/* initial state for the DFA and outputs the next state */
+/* takes parameter int c, returns the next state transition in the 
+dfa, and prints to stdout. global line variable is updated within this 
+function when '\n' is detected. */
 enum Statetype start(int c)
 {   
     enum Statetype state;
@@ -37,7 +39,7 @@ enum Statetype start(int c)
     return state;
 }
 
-/* enter single_quote state */
+/* takes int c, outputs stdout, returns next state from single_quote */
 enum Statetype single_quote(int c)
 {
     enum Statetype state;
@@ -62,7 +64,7 @@ enum Statetype single_quote(int c)
     return state;
 }
 
-/* backslash in char state */
+/* takes int c, outputs stdout, transitions back to single_quote */
 enum Statetype backslash_char(int c)
 {
     enum Statetype state;
@@ -71,7 +73,7 @@ enum Statetype backslash_char(int c)
     return state;
 }
 
-/* maybe_comment state */
+/* takes int c, outputs stdout, returns 1 of 5 possible next states */
 enum Statetype maybe_comment(int c)
 {   
     enum Statetype state;
@@ -109,7 +111,7 @@ enum Statetype maybe_comment(int c)
     return state;
 }
 
-/* comment state */
+/* takes int c comment state */
 enum Statetype comment(int c)
 {
     enum Statetype state;
